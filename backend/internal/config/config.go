@@ -69,6 +69,7 @@ type Config struct {
 	AutoSummarize         bool
 	ScheduledDigestAI     bool
 	UserAgent             string
+	FetchAllowPrivate     bool
 
 	// Auth
 	AuthMode string // none | easyauth
@@ -149,6 +150,7 @@ func Load() (*Config, error) {
 		AutoSummarize:         envBool("AUTO_SUMMARIZE", false),
 		ScheduledDigestAI:     envBool("SCHEDULED_DIGEST_AI", false),
 		UserAgent:             env("USER_AGENT", "CyNewsFeed/1.0 (+https://github.com/; RSS aggregator)"),
+		FetchAllowPrivate:     envBool("FETCH_ALLOW_PRIVATE", false),
 
 		AuthMode: env("AUTH_MODE", "none"),
 

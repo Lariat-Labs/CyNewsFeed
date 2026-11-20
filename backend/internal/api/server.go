@@ -126,7 +126,9 @@ func requestLogger(next http.Handler) http.Handler {
 		t0 := time.Now()
 		next.ServeHTTP(ww, r)
 		if strings.HasPrefix(r.URL.Path, "/api") {
-			slog.Debug("http", "method", r.Method, "path", r.URL.Path, "status", ww.Status(), "dur", time.Since(t0).Round(time.Millisecond))
+			// Strip CR/LF so request paths can't forge log lines.
+			path := strings.NewReplacer("\n", "", "\r", "").Replace(r.URL.Path)
+			slog.Debug("http", "method", r.Method, "path", path, "status", ww.Status(), "dur", time.Since(t0).Round(time.Millisecond))
 		}
 	})
 }

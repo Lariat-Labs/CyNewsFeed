@@ -158,7 +158,7 @@ func setup(t *testing.T) (*Pipeline, *store.Memory, *fakeAI, *slackSink) {
 	_ = st.UpsertRule(ctx, &model.Rule{ID: "ransom", Name: "Ransomware", Keywords: []string{"lockbit"}, Mode: model.ModeKeyword, Enabled: true})
 	_ = st.UpsertRule(ctx, &model.Rule{ID: "off", Name: "Disabled", Keywords: []string{"acme"}, Mode: model.ModeKeyword, Enabled: false})
 	fake := &fakeAI{}
-	p := New(cfg, st, feeds.NewFetcher(5*time.Second, "test"), fake, notify.NewSlack(ssrv.URL, "http://app", true))
+	p := New(cfg, st, feeds.NewFetcherAllowPrivate(5*time.Second, "test"), fake, notify.NewSlack(ssrv.URL, "http://app", true))
 	return p, st, fake, sink
 }
 

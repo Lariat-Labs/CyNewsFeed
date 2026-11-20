@@ -25,8 +25,44 @@ type Fetcher struct {
 	ua     string
 }
 
+// NewFetcher returns a client that refuses connections to private, loopback,
+// link-local (incl. cloud metadata) and other internal addresses.
 func NewFetcher(timeout time.Duration, userAgent string) *Fetcher {
-	return &Fetcher{client: &http.Client{Timeout: timeout}, ua: userAgent}
+	return newFetcher(timeout, userAgent, false)
+}
+
+// NewFetcherAllowPrivate disables the internal-address guard (FETCH_ALLOW_PRIVATE=true,
+// e.g. feeds on an internal network, and tests).
+func NewFetcherAllowPrivate(timeout time.Duration, userAgent string) *Fetcher {
+	return newFetcher(timeout, userAgent, true)
+}
+
+func newFetcher(timeout time.Duration, userAgent string, allowPrivate bool) *Fetcher {
+	client := &http.Client{
+		Timeout:   timeout,
+		Transport: safeTransport(allowPrivate),
+		CheckRedirect: func(req *http.Request, via []*http.Request) error {
+			if len(via) >= 5 {
+				return fmt.Errorf("too many redirects")
+			}
+			if req.URL.Scheme != "http" && req.URL.Scheme != "https" {
+				return fmt.Errorf("redirect to unsupported scheme %q", req.URL.Scheme)
+			}
+			return nil
+		},
+	}
+	return &Fetcher{client: client, ua: userAgent}
+}
+
+func checkScheme(raw string) error {
+	u, err := url.Parse(raw)
+	if err != nil {
+		return err
+	}
+	if u.Scheme != "http" && u.Scheme != "https" {
+		return fmt.Errorf("unsupported URL scheme %q", u.Scheme)
+	}
+	return nil
 }
 
 type Result struct {
@@ -41,6 +77,9 @@ type Result struct {
 // Fetch retrieves a feed using conditional GET and returns normalised items
 // (without AI fields). Callers handle dedupe.
 func (f *Fetcher) Fetch(ctx context.Context, feed model.Feed) (*Result, error) {
+	if err := checkScheme(feed.URL); err != nil {
+		return nil, err
+	}
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, feed.URL, nil)
 	if err != nil {
 		return nil, err
@@ -197,6 +236,9 @@ func parseKEV(body []byte, feed model.Feed) ([]model.Item, error) {
 
 // FullText downloads an article and extracts its main readable text.
 func (f *Fetcher) FullText(ctx context.Context, link string) (string, error) {
+	if err := checkScheme(link); err != nil {
+		return "", err
+	}
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, link, nil)
 	if err != nil {
 		return "", err

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/http/httptest"
+	"net/netip"
 	"strings"
 	"testing"
 	"time"
@@ -62,7 +63,7 @@ func TestFetchRSSConditional(t *testing.T) {
 	}))
 	defer srv.Close()
 
-	f := NewFetcher(5*time.Second, "test")
+	f := NewFetcherAllowPrivate(5*time.Second, "test")
 	feed := model.Feed{ID: "t", Name: "Test", URL: srv.URL + "/feed", Kind: model.FeedRSS, Category: model.CatPodcast}
 	res, err := f.Fetch(context.Background(), feed)
 	if err != nil {
@@ -113,5 +114,35 @@ func TestDefaultsValid(t *testing.T) {
 	}
 	if len(fs) < 30 {
 		t.Errorf("expected 30+ default feeds, got %d", len(fs))
+	}
+}
+
+func TestSSRFGuard(t *testing.T) {
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+		fmt.Fprint(w, `<rss><channel><title>x</title></channel></rss>`)
+	}))
+	defer srv.Close()
+	safe := NewFetcher(3*time.Second, "test")
+	for _, u := range []string{srv.URL, "http://169.254.169.254/metadata/identity/oauth2/token", "http://[::1]:1/", "http://10.0.0.1/", "file:///etc/passwd"} {
+		if _, err := safe.Fetch(context.Background(), model.Feed{URL: u, Kind: model.FeedRSS}); err == nil {
+			t.Errorf("expected %s to be refused", u)
+		}
+	}
+	if _, err := safe.FullText(context.Background(), "http://127.0.0.1:9/"); err == nil || !strings.Contains(err.Error(), "internal address") {
+		t.Errorf("full text should refuse loopback: %v", err)
+	}
+	allow := NewFetcherAllowPrivate(3*time.Second, "test")
+	if _, err := allow.Fetch(context.Background(), model.Feed{URL: srv.URL, Kind: model.FeedRSS}); err != nil {
+		t.Errorf("allow-private fetcher should reach local server: %v", err)
+	}
+	for _, ip := range []string{"8.8.8.8", "1.1.1.1", "2606:4700::1111"} {
+		if blockedAddr(netip.MustParseAddr(ip)) {
+			t.Errorf("public %s must be allowed", ip)
+		}
+	}
+	for _, ip := range []string{"127.0.0.1", "10.1.2.3", "172.16.0.1", "192.168.1.1", "169.254.169.254", "168.63.129.16", "100.64.0.1", "::1", "fe80::1", "fd00::1", "::ffff:127.0.0.1", "0.0.0.0"} {
+		if !blockedAddr(netip.MustParseAddr(ip)) {
+			t.Errorf("internal %s must be blocked", ip)
+		}
 	}
 }

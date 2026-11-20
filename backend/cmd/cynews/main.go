@@ -79,7 +79,11 @@ func run() error {
 	if err != nil {
 		return err
 	}
-	pipe := pipeline.New(cfg, st, feeds.NewFetcher(cfg.FetchTimeout, cfg.UserAgent), provider,
+	fetcher := feeds.NewFetcher(cfg.FetchTimeout, cfg.UserAgent)
+	if cfg.FetchAllowPrivate {
+		fetcher = feeds.NewFetcherAllowPrivate(cfg.FetchTimeout, cfg.UserAgent)
+	}
+	pipe := pipeline.New(cfg, st, fetcher, provider,
 		notify.NewSlack(cfg.SlackWebhookURL, cfg.PublicBaseURL, cfg.SlackEnabled))
 	toolbox := agent.NewToolbox(st, agent.NewIntel(cfg.UserAgent, cfg.NVDKey, cfg.VirusTotalKey, cfg.AbuseIPDBKey))
 	ag, agErr := agent.New(provider, toolbox, st, cfg.AgentMaxSteps, cfg.RetentionDays)
