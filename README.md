@@ -200,6 +200,12 @@ frontend/                React + Vite + TypeScript + Tailwind + TanStack Query
 infra/terraform/         Azure infrastructure
 ```
 
+## Security
+
+See [SECURITY.md](SECURITY.md) to report vulnerabilities privately. The repo uses secret scanning with push protection,
+CodeQL code scanning (Go, TypeScript, Actions), Dependabot alerts, security updates and version updates, and
+dependency review on pull requests.
+
 ## Documentation
 
 The full docs (getting started, deployment, configuration, user guide, integrations, API, CLI, costs and architecture)
