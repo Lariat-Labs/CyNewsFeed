@@ -1,0 +1,9 @@
+**/node_modules
+backend/internal/web/dist
+infra/terraform/.terraform
+infra/terraform/*.tfstate*
+.env
+*.log
+infra/
+scripts/
+.git

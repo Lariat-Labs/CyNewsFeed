@@ -1,0 +1,62 @@
+# Default sources seeded on first run. Edit in the UI afterwards.
+# kind: rss (RSS/Atom/JSON Feed) | cisa-kev
+# category: news | research | advisory | podcast
+# weight: 1-5, used to rank items for the daily digest
+
+# ---------- News ----------
+- { id: krebs, name: Krebs on Security, url: "https://krebsonsecurity.com/feed/", kind: rss, category: news, weight: 5, enabled: true }
+- { id: bleepingcomputer, name: BleepingComputer, url: "https://www.bleepingcomputer.com/feed/", kind: rss, category: news, weight: 4, enabled: true }
+- { id: thehackernews, name: The Hacker News, url: "https://feeds.feedburner.com/TheHackersNews", kind: rss, category: news, weight: 3, enabled: true }
+- { id: therecord, name: The Record, url: "https://therecord.media/feed", kind: rss, category: news, weight: 4, enabled: true }
+- { id: darkreading, name: Dark Reading, url: "https://www.darkreading.com/rss.xml", kind: rss, category: news, weight: 3, enabled: true }
+- { id: securityweek, name: SecurityWeek, url: "https://www.securityweek.com/feed/", kind: rss, category: news, weight: 3, enabled: true }
+- { id: cyberscoop, name: CyberScoop, url: "https://cyberscoop.com/feed/", kind: rss, category: news, weight: 3, enabled: true }
+- { id: helpnetsecurity, name: Help Net Security, url: "https://www.helpnetsecurity.com/feed/", kind: rss, category: news, weight: 2, enabled: true }
+- { id: theregister-security, name: The Register — Security, url: "https://www.theregister.com/security/headlines.atom", kind: rss, category: news, weight: 3, enabled: true }
+- { id: arstechnica-security, name: Ars Technica — Security, url: "https://arstechnica.com/tag/security/feed/", kind: rss, category: news, weight: 3, enabled: true }
+- { id: schneier, name: Schneier on Security, url: "https://www.schneier.com/feed/atom/", kind: rss, category: news, weight: 3, enabled: true }
+- { id: sans-isc, name: SANS ISC Diary, url: "https://isc.sans.edu/rssfeed_full.xml", kind: rss, category: news, weight: 3, enabled: true }
+
+# ---------- Vendor research ----------
+- { id: talos, name: Cisco Talos, url: "https://blog.talosintelligence.com/rss/", kind: rss, category: research, weight: 4, enabled: true }
+- { id: unit42, name: Palo Alto Unit 42, url: "https://unit42.paloaltonetworks.com/feed/", kind: rss, category: research, weight: 4, enabled: true }
+- { id: gti, name: Google Threat Intelligence (Mandiant), url: "https://feeds.feedburner.com/threatintelligence/pvexyqv7v0v", kind: rss, category: research, weight: 5, enabled: true }
+- { id: ms-security, name: Microsoft Security Blog, url: "https://www.microsoft.com/en-us/security/blog/feed/", kind: rss, category: research, weight: 4, enabled: true }
+- { id: project-zero, name: Google Project Zero, url: "https://googleprojectzero.blogspot.com/feeds/posts/default", kind: rss, category: research, weight: 5, enabled: true }
+- { id: securelist, name: Kaspersky Securelist, url: "https://securelist.com/feed/", kind: rss, category: research, weight: 3, enabled: true }
+- { id: welivesecurity, name: ESET WeLiveSecurity, url: "https://www.welivesecurity.com/en/rss/feed/", kind: rss, category: research, weight: 3, enabled: true }
+- { id: checkpoint-research, name: Check Point Research, url: "https://research.checkpoint.com/feed/", kind: rss, category: research, weight: 3, enabled: true }
+- { id: rapid7, name: Rapid7 Blog, url: "https://www.rapid7.com/blog/rss/", kind: rss, category: research, weight: 3, enabled: true }
+- { id: trailofbits, name: Trail of Bits, url: "https://blog.trailofbits.com/feed/", kind: rss, category: research, weight: 3, enabled: true }
+- { id: crowdstrike, name: CrowdStrike Blog, url: "https://www.crowdstrike.com/blog/feed/", kind: rss, category: research, weight: 3, enabled: true }
+
+# ---------- Advisories & vulnerabilities ----------
+- { id: cisa-kev, name: CISA Known Exploited Vulnerabilities, url: "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json", kind: cisa-kev, category: advisory, weight: 5, enabled: true }
+- { id: cisa-advisories, name: CISA Cybersecurity Advisories, url: "https://www.cisa.gov/cybersecurity-advisories/all.xml", kind: rss, category: advisory, weight: 5, enabled: true }
+- { id: cisa-ics, name: CISA ICS Advisories, url: "https://www.cisa.gov/cybersecurity-advisories/ics-advisories.xml", kind: rss, category: advisory, weight: 3, enabled: true }
+- { id: zdi-published, name: Zero Day Initiative — Published, url: "https://www.zerodayinitiative.com/rss/published/", kind: rss, category: advisory, weight: 3, enabled: true }
+- { id: exploit-db, name: Exploit-DB, url: "https://www.exploit-db.com/rss.xml", kind: rss, category: advisory, weight: 2, enabled: false }
+- { id: msrc-update-guide, name: MSRC Security Update Guide, url: "https://api.msrc.microsoft.com/update-guide/rss", kind: rss, category: advisory, weight: 3, enabled: false }
+
+# ---------- Podcasts ----------
+- { id: risky-business, name: Risky Business, url: "https://risky.biz/feeds/risky-business/", kind: rss, category: podcast, weight: 4, enabled: true }
+- { id: darknet-diaries, name: Darknet Diaries, url: "https://feeds.megaphone.fm/darknetdiaries", kind: rss, category: podcast, weight: 3, enabled: true }
+- { id: sans-stormcast, name: SANS ISC StormCast, url: "https://isc.sans.edu/dailypodcast.xml", kind: rss, category: podcast, weight: 3, enabled: true }
+- { id: security-now, name: Security Now, url: "https://feeds.twit.tv/sn.xml", kind: rss, category: podcast, weight: 3, enabled: true }
+- { id: smashing-security, name: Smashing Security, url: "https://www.smashingsecurity.com/rss", kind: rss, category: podcast, weight: 2, enabled: true }
+- { id: cyberwire-daily, name: CyberWire Daily, url: "https://feeds.megaphone.fm/cyberwire-daily-podcast", kind: rss, category: podcast, weight: 3, enabled: true }
+
+
+# ---------- AI security ----------
+- { id: osv-ai-watch, name: AI supply-chain watch (OSV), url: "https://api.osv.dev/v1/query", kind: osv-watch, category: ai-security, weight: 4, enabled: true }
+- { id: owasp-genai, name: OWASP GenAI Security Project, url: "https://genai.owasp.org/feed/", kind: rss, category: ai-security, weight: 4, enabled: true }
+- { id: mitre-atlas, name: MITRE ATLAS releases, url: "https://github.com/mitre-atlas/atlas-data/releases.atom", kind: rss, category: ai-security, weight: 3, enabled: true }
+- { id: aiid, name: AI Incident Database, url: "https://incidentdatabase.ai/rss.xml", kind: rss, category: ai-security, weight: 3, enabled: true }
+- { id: arxiv-llm-security, name: arXiv — LLM security papers, url: "https://export.arxiv.org/api/query?search_query=cat:cs.CR+AND+(abs:%22large+language+model%22+OR+abs:LLM+OR+abs:%22prompt+injection%22)&sortBy=submittedDate&sortOrder=descending&max_results=40", kind: rss, category: ai-security, weight: 2, enabled: true }
+- { id: embrace-the-red, name: Embrace The Red, url: "https://embracethered.com/blog/index.xml", kind: rss, category: ai-security, weight: 4, enabled: true }
+- { id: simonw-prompt-injection, name: Simon Willison — prompt injection, url: "https://simonwillison.net/tags/prompt-injection.atom", kind: rss, category: ai-security, weight: 3, enabled: true }
+- { id: nvidia-ai-red-team, name: NVIDIA AI Red Team, url: "https://developer.nvidia.com/blog/tag/ai-red-team/feed/", kind: rss, category: ai-security, weight: 3, enabled: true }
+- { id: google-security-blog, name: Google Online Security Blog, url: "https://security.googleblog.com/feeds/posts/default", kind: rss, category: research, weight: 4, enabled: true }
+- { id: jfrog-research, name: JFrog Security Research, url: "https://jfrog.com/blog/feed/", kind: rss, category: research, weight: 3, enabled: true }
+- { id: openai-news, name: OpenAI News, url: "https://openai.com/news/rss.xml", kind: rss, category: ai-security, weight: 2, enabled: false }
+- { id: huggingface-blog, name: Hugging Face Blog, url: "https://huggingface.co/blog/feed.xml", kind: rss, category: ai-security, weight: 2, enabled: false }

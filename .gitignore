@@ -1,0 +1,38 @@
+# ---- Secrets (never commit) ----
+.env
+.env.*
+!.env.example
+*.tfvars
+*.tfvars.json
+!terraform.tfvars.example
+*.tfstate
+*.tfstate.*
+*.pem
+*.key
+*.pfx
+*.p12
+crash.log
+crash.*.log
+.claude/settings.local.json
+
+# ---- Terraform ----
+.terraform/
+.terraform.lock.hcl.bak
+
+# ---- Build output / dependencies ----
+node_modules/
+/bin/
+backend/internal/web/dist/*
+!backend/internal/web/dist/.gitkeep
+frontend/*.tsbuildinfo
+site/
+.venv/
+__pycache__/
+
+# ---- OS / editors / logs ----
+.DS_Store
+*.log
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.swp

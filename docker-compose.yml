@@ -1,0 +1,36 @@
+# Local stack: app (API + SPA + scheduler) + Azurite (Azure Storage emulator).
+#   cp .env.example .env   # add your keys
+#   docker compose up --build
+#   open http://localhost:8080
+# Optional local LLM:  docker compose --profile ollama up --build  (set AI_PROVIDER=ollama)
+services:
+  app:
+    build: .
+    ports: ["8080:8080"]
+    env_file: [.env]
+    environment:
+      STORAGE_MODE: azure
+      AZURE_STORAGE_CONNECTION_STRING: "DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://azurite:10000/devstoreaccount1;TableEndpoint=http://azurite:10002/devstoreaccount1;"
+      SCHEDULER_ENABLED: "true"
+      RUN_ON_START: "true"
+      OLLAMA_URL: http://ollama:11434
+      PUBLIC_BASE_URL: http://localhost:8080
+    depends_on: [azurite]
+    restart: unless-stopped
+
+  azurite:
+    image: mcr.microsoft.com/azure-storage/azurite
+    command: azurite --blobHost 0.0.0.0 --queueHost 0.0.0.0 --tableHost 0.0.0.0 --location /data --skipApiVersionCheck --loose
+    ports: ["10000:10000", "10002:10002"]
+    volumes: [azurite-data:/data]
+    restart: unless-stopped
+
+  ollama:
+    image: ollama/ollama
+    profiles: [ollama]
+    ports: ["11434:11434"]
+    volumes: [ollama-data:/root/.ollama]
+
+volumes:
+  azurite-data:
+  ollama-data:
