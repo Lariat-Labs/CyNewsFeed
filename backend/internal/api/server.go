@@ -168,7 +168,7 @@ func (s *Server) me(w http.ResponseWriter, r *http.Request) {
 func (s *Server) publicConfig(w http.ResponseWriter, _ *http.Request) {
 	p := s.pipe.AIProvider()
 	writeJSON(w, 200, map[string]any{
-		"aiProvider": p.Name(), "aiModel": p.Model(), "slack": s.cfg.SlackWebhookURL != "" && s.cfg.SlackEnabled,
+		"version": s.cfg.Version, "aiProvider": p.Name(), "aiModel": p.Model(), "slack": s.cfg.SlackWebhookURL != "" && s.cfg.SlackEnabled,
 		"fetchCron": s.cfg.FetchCron, "digestCron": s.cfg.DigestCron, "timezone": s.cfg.Location.String(),
 		"retentionDays": s.cfg.RetentionDays, "schedulerEnabled": s.cfg.SchedulerEnabled,
 		"defaultThreshold": s.cfg.DefaultRuleThreshold,

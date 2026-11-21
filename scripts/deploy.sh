@@ -4,7 +4,7 @@
 set -euo pipefail
 cd "$(dirname "$0")/../infra/terraform"
 
-TAG="${1:-$(git rev-parse --short HEAD 2>/dev/null || date +%Y%m%d%H%M%S)}"
+TAG="${1:-$(git describe --tags --always 2>/dev/null || date +%Y%m%d%H%M%S)}"
 [ -f terraform.tfvars ] || { echo "Create infra/terraform/terraform.tfvars (see terraform.tfvars.example)"; exit 1; }
 
 terraform init -input=false -upgrade >/dev/null
@@ -15,7 +15,7 @@ terraform apply -input=false -auto-approve \
 
 ACR=$(terraform output -raw acr_name)
 echo "==> Building image cynews:${TAG} in ${ACR}"
-az acr build --registry "$ACR" --image "cynews:${TAG}" --image "cynews:latest" ../..
+az acr build --registry "$ACR" --image "cynews:${TAG}" --image "cynews:latest" --build-arg VERSION="${TAG}" ../..
 
 echo "==> Applying infrastructure with image tag ${TAG}"
 terraform apply -input=false -var "image_tag=${TAG}"

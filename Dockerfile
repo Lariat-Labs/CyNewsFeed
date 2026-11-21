@@ -16,10 +16,15 @@ RUN go mod download
 COPY backend/ ./
 COPY --from=web /src/backend/internal/web/dist ./internal/web/dist
 ARG VERSION=dev
-RUN CGO_ENABLED=0 go build -trimpath -ldflags="-s -w" -o /out/cynews ./cmd/cynews
+RUN CGO_ENABLED=0 go build -trimpath -ldflags="-s -w -X main.version=${VERSION}" -o /out/cynews ./cmd/cynews
 
 # ---- runtime ----
 FROM gcr.io/distroless/static-debian12:nonroot
+ARG VERSION=dev
+LABEL org.opencontainers.image.title="CyNewsFeed" \
+      org.opencontainers.image.description="Cybersecurity news aggregator with AI briefings, alert rules, detections, IOC sharing and a research agent" \
+      org.opencontainers.image.source="https://github.com/Lariat-Labs/CyNewsFeed" \
+      org.opencontainers.image.version="${VERSION}"
 COPY --from=build /out/cynews /cynews
 ENV PORT=8080 LOG_FORMAT=json
 EXPOSE 8080

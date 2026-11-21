@@ -51,6 +51,10 @@ func run() error {
 	if len(os.Args) > 1 {
 		cmd = os.Args[1]
 	}
+	if cmd == "version" || cmd == "--version" || cmd == "-v" {
+		fmt.Println("cynews", version)
+		return nil
+	}
 	if cmd == "-h" || cmd == "--help" || cmd == "help" {
 		fmt.Println("usage: cynews [serve|run|digest|seed [--overwrite]|query <tool> [json]|query --list|ask <question>]")
 		return nil
@@ -59,6 +63,7 @@ func run() error {
 	if err != nil {
 		return err
 	}
+	cfg.Version = version
 	setupLogging(cfg)
 	if cmd == "mcp" {
 		// stdout carries the protocol: keep logs on stderr only.
@@ -88,7 +93,7 @@ func run() error {
 	toolbox := agent.NewToolbox(st, agent.NewIntel(cfg.UserAgent, cfg.NVDKey, cfg.VirusTotalKey, cfg.AbuseIPDBKey))
 	ag, agErr := agent.New(provider, toolbox, st, cfg.AgentMaxSteps, cfg.RetentionDays)
 	if cmd != "query" && cmd != "mcp" {
-		slog.Info("cynews starting", "cmd", cmd, "storage", cfg.StorageMode, "ai", provider.Name(), "model", provider.Model(), "agent", agErr == nil)
+		slog.Info("cynews starting", "version", version, "cmd", cmd, "storage", cfg.StorageMode, "ai", provider.Name(), "model", provider.Model(), "agent", agErr == nil)
 	}
 
 	switch cmd {

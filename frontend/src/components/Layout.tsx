@@ -86,7 +86,20 @@ export default function Layout() {
         <img src="/favicon.svg" alt="" className="size-7" />
         <div>
           <div className="text-[15px] font-semibold leading-tight">CyNewsFeed</div>
-          <div className="text-[11px] text-muted">Security intel, summarised</div>
+          <div className="text-[11px] text-muted">
+            Security intel, summarised
+            {cfg.data?.version && (
+              <a
+                href={cfg.data.version.startsWith("v") ? `https://github.com/Lariat-Labs/CyNewsFeed/releases/tag/${cfg.data.version}` : "https://github.com/Lariat-Labs/CyNewsFeed"}
+                target="_blank"
+                rel="noreferrer"
+                className="ml-1.5 font-mono text-[10px] hover:text-accent"
+                title="Release notes"
+              >
+                {cfg.data.version}
+              </a>
+            )}
+          </div>
         </div>
       </div>
       <nav className="scroll-thin flex-1 space-y-3 overflow-y-auto px-2">

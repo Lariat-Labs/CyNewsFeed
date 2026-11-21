@@ -12,8 +12,10 @@ install: ## Install frontend deps and Go modules
 web: ## Build the SPA into the Go embed dir
 	cd frontend && npm run build
 
+VERSION ?= $(shell git describe --tags --always --dirty 2>/dev/null || echo dev)
+
 build: web ## Build the single binary to ./bin/cynews
-	cd backend && CGO_ENABLED=0 go build -trimpath -o ../bin/cynews ./cmd/cynews
+	cd backend && CGO_ENABLED=0 go build -trimpath -ldflags "-X main.version=$(VERSION)" -o ../bin/cynews ./cmd/cynews
 
 azurite: ## Start Azurite (storage emulator) in Docker
 	@docker start cynews-azurite >/dev/null 2>&1 || docker run -d --name cynews-azurite -p 10000:10000 -p 10002:10002 \

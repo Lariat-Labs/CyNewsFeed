@@ -200,6 +200,13 @@ frontend/                React + Vite + TypeScript + Tailwind + TanStack Query
 infra/terraform/         Azure infrastructure
 ```
 
+## Releases
+
+CyNewsFeed is released as **one versioned bundle** (SemVer). Each [release](https://github.com/Lariat-Labs/CyNewsFeed/releases)
+ships prebuilt `cynews` binaries for Linux, macOS and Windows (amd64/arm64, UI embedded), a multi-arch image
+`ghcr.io/lariat-labs/cynewsfeed:<version>`, and auto-generated notes. Maintainers cut releases from **Actions → Release → Run
+workflow** (patch / minor / major), or by pushing a `vX.Y.Z` tag. `cynews version` and the app sidebar show the running version.
+
 ## Security
 
 See [SECURITY.md](SECURITY.md) to report vulnerabilities privately. The repo uses secret scanning with push protection,

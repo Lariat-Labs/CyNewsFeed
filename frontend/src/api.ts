@@ -160,6 +160,7 @@ export interface Stats {
 }
 
 export interface AppConfig {
+  version?: string;
   aiProvider: string;
   aiModel: string;
   slack: boolean;

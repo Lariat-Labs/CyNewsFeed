@@ -74,6 +74,8 @@ type Config struct {
 	// Auth
 	AuthMode string // none | easyauth
 
+	Version string // set from the build (ldflags), not the environment
+
 	// Sharing / integrations
 	TAXIIToken    string
 	MCPToken      string
